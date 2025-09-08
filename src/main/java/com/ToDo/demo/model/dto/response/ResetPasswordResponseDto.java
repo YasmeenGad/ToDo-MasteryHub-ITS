@@ -1,13 +1,15 @@
 package com.ToDo.demo.model.dto.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDto {
-    private String accessToken;
+@Builder
+public class ResetPasswordResponseDto {
+    private String message;
 }
