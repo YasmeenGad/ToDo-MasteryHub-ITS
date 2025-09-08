@@ -6,15 +6,9 @@ import lombok.*;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginResponseDto {
     private String accessToken;
     private String message;
-
-    public LoginResponseDto() {
-    }
-
-    public LoginResponseDto(String accessToken, String message) {
-        this.accessToken = accessToken;
-        this.message = message;
-    }
 }

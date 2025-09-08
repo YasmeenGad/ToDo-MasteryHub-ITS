@@ -35,14 +35,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Skip JWT authentication for public endpoints
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/login")) {
+        if (requestURI.startsWith("/api/auth/login") || requestURI.startsWith("/api/auth/register")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extract and validate JWT token
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class RegisterResponseDto {
     private Long id;
     private String email;
+    private String firstName;
+    private String secondName;
 }

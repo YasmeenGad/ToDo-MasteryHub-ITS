@@ -19,20 +19,4 @@ public class LoginRequestDto {
     @NotBlank(message = "Password is required")
     private String password;
 
-    public @Email(message = "Please Provide a valid Email") @NotBlank(message = "Email is required") String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@Email(message = "Please Provide a valid Email") @NotBlank(message = "Email is required") String email) {
-        this.email = email;
-    }
-
-    public @NotBlank(message = "Password is required") String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@NotBlank(message = "Password is required") String password) {
-        this.password = password;
-    }
-
 }
