@@ -1,9 +1,18 @@
 package com.ToDo.demo.service.contract;
 
 import com.ToDo.demo.model.dto.request.TaskRequestDto;
+import com.ToDo.demo.model.dto.response.TaskResponseDto;
 import com.ToDo.demo.utils.base.BaseResponse;
+import com.ToDo.demo.utils.enums.TaskLabel;
 import org.springframework.http.ResponseEntity;
 
 public interface TaskService {
-    ResponseEntity<BaseResponse> addTask(TaskRequestDto request);
+    ResponseEntity<BaseResponse> addTask(TaskRequestDto request, Long userId);
+    ResponseEntity<BaseResponse> editTask(Long taskId, TaskRequestDto request, Long userId);
+    ResponseEntity<BaseResponse> deleteTask(Long taskId, Long userId);
+    ResponseEntity<BaseResponse> getAllTasks(Long userId);
+    ResponseEntity<BaseResponse> getTasksByLabel(Long userId, TaskLabel label);
+    ResponseEntity<BaseResponse> markTaskCompleted(Long taskId, Long userId);
+    ResponseEntity<BaseResponse> markAllTasksCompleted(Long userId);
+    ResponseEntity<BaseResponse> deleteAllCompletedTasks(Long userId);
 }

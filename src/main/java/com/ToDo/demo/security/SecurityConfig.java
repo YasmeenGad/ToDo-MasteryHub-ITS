@@ -41,8 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req -> req
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest()
-                                .authenticated()
+                                .requestMatchers("/api/tasks/**").authenticated()
                 )
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
@@ -54,7 +53,7 @@ public class SecurityConfig {
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .logout(l -> l
-                        .logoutUrl("/logout")
+                        .logoutUrl("/api/auth/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
                         ))

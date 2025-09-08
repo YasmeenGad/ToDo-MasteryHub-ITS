@@ -32,4 +32,11 @@ public class TaskEntity {
 
     @Column(nullable = false)
     private LocalDateTime date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @Column(nullable = false)
+    private boolean completed = false;
 }
