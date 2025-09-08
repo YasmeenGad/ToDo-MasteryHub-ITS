@@ -51,4 +51,26 @@ public class TaskController {
     public ResponseEntity<BaseResponse> getTasksByLabel(@RequestParam Long userId, @RequestParam TaskLabel label) {
         return taskService.getTasksByLabel(userId, label);
     }
+
+    @PutMapping("/{taskId}/complete")
+    public ResponseEntity<BaseResponse> markTaskCompleted(
+            @PathVariable Long taskId,
+            @RequestParam Long userId
+    ) {
+        return taskService.markTaskCompleted(taskId, userId);
+    }
+
+    @PutMapping("/complete-all")
+    public ResponseEntity<BaseResponse> markAllTasksCompleted(
+            @RequestParam Long userId
+    ) {
+        return taskService.markAllTasksCompleted(userId);
+    }
+
+    @DeleteMapping("/delete-completed")
+    public ResponseEntity<BaseResponse> deleteAllCompletedTasks(
+            @RequestParam Long userId
+    ) {
+        return taskService.deleteAllCompletedTasks(userId);
+    }
 }
