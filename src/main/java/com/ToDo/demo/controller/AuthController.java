@@ -37,4 +37,10 @@ public class AuthController {
     public ResponseEntity<BaseResponse> resetPassword(@RequestBody @Valid ResetPasswordRequestDto requestDto) {
         return authService.resetPassword(requestDto);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponse> logout() {
+        return authService.logout();
+    }
+
 }

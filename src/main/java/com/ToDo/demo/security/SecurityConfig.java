@@ -1,4 +1,5 @@
 package com.ToDo.demo.security;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -55,8 +56,16 @@ public class SecurityConfig {
                 .logout(l -> l
                         .logoutUrl("/api/auth/logout")
                         .addLogoutHandler(logoutHandler)
-                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
-                        ))
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            SecurityContextHolder.clearContext();
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write(
+                                    "{\"success\": true, \"message\": \"Logged out successfully\"}"
+                            );
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
+                )
                 .build();
     }
 
