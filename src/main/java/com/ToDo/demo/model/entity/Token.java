@@ -24,30 +24,6 @@ public class Token {
     @Column(name = "logged_out")
     private boolean loggedOut ;
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public boolean isLoggedOut() {
-        return loggedOut;
-    }
-
-    public void setLoggedOut(boolean loggedOut) {
-        this.loggedOut = loggedOut;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference("user-token")
