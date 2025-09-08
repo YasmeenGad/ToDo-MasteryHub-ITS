@@ -2,9 +2,19 @@ package com.ToDo.demo.model.entity;
 
 import com.ToDo.demo.utils.enums.TaskLabel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "tasks")
 public class TaskEntity {
 
     @Id
