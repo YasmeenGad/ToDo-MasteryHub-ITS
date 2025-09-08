@@ -40,4 +40,9 @@ public class TaskController {
     ) {
         return taskService.deleteTask(taskId, userId);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<BaseResponse> getAllTasks(@RequestParam Long userId) {
+        return taskService.getAllTasks(userId);
+    }
 }

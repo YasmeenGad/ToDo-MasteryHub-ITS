@@ -1,6 +1,7 @@
 package com.ToDo.demo.service.impl;
 
 import com.ToDo.demo.model.dto.request.TaskRequestDto;
+import com.ToDo.demo.model.dto.response.TaskResponseDto;
 import com.ToDo.demo.model.entity.TaskEntity;
 import com.ToDo.demo.model.entity.UserEntity;
 import com.ToDo.demo.model.mapper.TaskMapper;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -96,5 +99,21 @@ public class TaskServiceImpl implements TaskService {
         return ResponseEntity.ok(
                 new BaseResponse(true, "Task deleted successfully", null)
         );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getAllTasks(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<TaskResponseDto> tasks = taskRepository.findByUser(user)
+                .stream()
+                .map(TaskMapper::toTaskResponseDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new
+                BaseResponse(true, "Tasks fetched successfully",tasks)
+        );
+
     }
 }

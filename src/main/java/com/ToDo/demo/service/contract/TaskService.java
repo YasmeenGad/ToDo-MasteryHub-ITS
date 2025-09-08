@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface TaskService {
     ResponseEntity<BaseResponse> addTask(TaskRequestDto request, Long userId);
-
     ResponseEntity<BaseResponse> editTask(Long taskId, TaskRequestDto request, Long userId);
     ResponseEntity<BaseResponse> deleteTask(Long taskId, Long userId);
+    ResponseEntity<BaseResponse> getAllTasks(Long userId);
 }
