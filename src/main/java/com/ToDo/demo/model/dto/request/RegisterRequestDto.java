@@ -25,4 +25,7 @@ public class RegisterRequestDto {
 
     @NotBlank(message = "Please Enter Password")
     private String password;
+
+    @NotBlank(message = "Please Enter Confirm Password")
+    private String confirmPassword;
 }

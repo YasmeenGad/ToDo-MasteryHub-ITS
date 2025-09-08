@@ -56,6 +56,14 @@ public class AuthServiceImpl implements AuthService {
                     .body(new BaseResponse(false, "Email already exists", null));
         }
 
+        boolean passwordsMatch = request.getPassword().equals(request.getConfirmPassword());
+
+        if (!passwordsMatch) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "Passwords don't match", null));
+        }
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         UserEntity user = AuthMapper.toUserEntity(request, encodedPassword);
