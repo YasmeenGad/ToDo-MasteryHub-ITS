@@ -1,6 +1,7 @@
 package com.ToDo.demo.security;
 
 
+import com.ToDo.demo.repository.TokenRepository;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,11 +22,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private  JWTGenerator jwtGenerator;
     private  CustomUserDetailsService userDetailsService;
+    private TokenRepository tokenRepository;
 
 
-    public JWTAuthenticationFilter(JWTGenerator jwtGenerator, CustomUserDetailsService userDetailsService) {
+    public JWTAuthenticationFilter(JWTGenerator jwtGenerator, CustomUserDetailsService userDetailsService, TokenRepository tokenRepository) {
         this.jwtGenerator = jwtGenerator;
         this.userDetailsService = userDetailsService;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -49,6 +53,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
+
+        var storedToken = tokenRepository.findByToken(token).orElse(null);
+        if (storedToken == null || storedToken.isLoggedOut()) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
         String username = jwtGenerator.extractEmail(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -69,17 +80,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-        // just for debug purpose
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            System.out.println("Authenticated user: " + authentication.getName());
-            System.out.println("Requested URI: " + request.getRequestURI());
-            authentication.getAuthorities().forEach(auth ->
-                    System.out.println("JWT filter authority: [" + auth.getAuthority()+"]")
-            );
-        }else {
-            System.out.println("No authentication found in SecurityContextHolder.");
-        }
 
     }
 }

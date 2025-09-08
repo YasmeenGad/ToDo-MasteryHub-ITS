@@ -6,38 +6,41 @@ import com.ToDo.demo.model.dto.request.RegisterRequestDto;
 import com.ToDo.demo.model.dto.request.ResetPasswordRequestDto;
 import com.ToDo.demo.service.contract.AuthService;
 import com.ToDo.demo.utils.base.BaseResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
-    private AuthService _authService;
+    private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponse> login(@RequestBody @Validated LoginRequestDto requestDto) {
-        return _authService.login(requestDto);
+    public ResponseEntity<BaseResponse> login(@RequestBody @Valid LoginRequestDto requestDto) {
+        return authService.login(requestDto);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse> register(@RequestBody @Validated RegisterRequestDto request) {
-        return _authService.register(request);
+    public ResponseEntity<BaseResponse> register(@RequestBody @Valid RegisterRequestDto request) {
+        return authService.register(request);
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<BaseResponse> forgotPassword(@RequestBody ForgotPasswordRequestDto requestDto) {
-        return _authService.forgotPassword(requestDto);
+    public ResponseEntity<BaseResponse> forgotPassword(@RequestBody @Valid ForgotPasswordRequestDto requestDto) {
+        return authService.forgotPassword(requestDto);
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<BaseResponse> resetPassword(@RequestBody ResetPasswordRequestDto requestDto) {
-        return _authService.resetPassword(requestDto);
+    @PutMapping("/reset-password")
+    public ResponseEntity<BaseResponse> resetPassword(@RequestBody @Valid ResetPasswordRequestDto requestDto) {
+        return authService.resetPassword(requestDto);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponse> logout() {
+        return authService.logout();
+    }
+
 }
