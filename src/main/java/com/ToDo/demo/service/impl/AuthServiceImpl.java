@@ -9,6 +9,7 @@ import com.ToDo.demo.model.mapper.AuthMapper;
 import com.ToDo.demo.repository.UserRepository;
 import com.ToDo.demo.security.JWTGenerator;
 import com.ToDo.demo.service.contract.AuthService;
+import com.ToDo.demo.utils.base.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,16 +35,26 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public ResponseEntity<LoginResponseDto> login(LoginRequestDto requestDto) {
+    public ResponseEntity<BaseResponse> login(LoginRequestDto requestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword())
         );
         String token = jwtGenerator.generateToken(authentication);
-        return ResponseEntity.ok(new LoginResponseDto(token, "User Logged Successfully"));
+        return ResponseEntity.ok(
+                new BaseResponse(true, "User logged successfully", new LoginResponseDto(token))
+        );
     }
 
     @Override
-    public ResponseEntity<RegisterResponseDto> register(RegisterRequestDto request) {
+    public ResponseEntity<BaseResponse> register(RegisterRequestDto request) {
+
+        boolean emailExists = userRepository.findByEmail(request.getEmail()).isPresent();
+
+        if (emailExists) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "Email already exists", null));
+        }
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
@@ -51,6 +62,8 @@ public class AuthServiceImpl implements AuthService {
 
         UserEntity savedUser = userRepository.save(user);
 
-        return ResponseEntity.ok(AuthMapper.toRegisterResponseDto(savedUser));
+        return ResponseEntity.ok(
+                new BaseResponse(true, "User registered successfully", AuthMapper.toRegisterResponseDto(savedUser))
+        );
     }
 }
