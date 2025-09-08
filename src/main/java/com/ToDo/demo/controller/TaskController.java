@@ -4,6 +4,7 @@ package com.ToDo.demo.controller;
 import com.ToDo.demo.model.dto.request.TaskRequestDto;
 import com.ToDo.demo.service.contract.TaskService;
 import com.ToDo.demo.utils.base.BaseResponse;
+import com.ToDo.demo.utils.enums.TaskLabel;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +42,13 @@ public class TaskController {
         return taskService.deleteTask(taskId, userId);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<BaseResponse> getAllTasks(@RequestParam Long userId) {
+    @GetMapping("/all/{userId}")
+    public ResponseEntity<BaseResponse> getAllTasks(@PathVariable Long userId) {
         return taskService.getAllTasks(userId);
+    }
+
+    @GetMapping("/by-label")
+    public ResponseEntity<BaseResponse> getTasksByLabel(@RequestParam Long userId, @RequestParam TaskLabel label) {
+        return taskService.getTasksByLabel(userId, label);
     }
 }

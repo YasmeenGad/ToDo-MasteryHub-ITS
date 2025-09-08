@@ -9,6 +9,7 @@ import com.ToDo.demo.repository.TaskRepository;
 import com.ToDo.demo.repository.UserRepository;
 import com.ToDo.demo.service.contract.TaskService;
 import com.ToDo.demo.utils.base.BaseResponse;
+import com.ToDo.demo.utils.enums.TaskLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -103,17 +104,46 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ResponseEntity<BaseResponse> getAllTasks(Long userId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<UserEntity> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "User not found", null));
+        }
+
+        UserEntity user = userOptional.get();
 
         List<TaskResponseDto> tasks = taskRepository.findByUser(user)
                 .stream()
                 .map(TaskMapper::toTaskResponseDto)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new
-                BaseResponse(true, "Tasks fetched successfully",tasks)
+        return ResponseEntity.ok(
+                new BaseResponse(true, "Tasks fetched successfully", tasks)
         );
 
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> getTasksByLabel(Long userId, TaskLabel label) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "User not found", null));
+        }
+
+        UserEntity userEntity = user.get();
+
+        List<TaskResponseDto> tasks = taskRepository.findByUserAndLabel(userEntity, label)
+                .stream()
+                .map(TaskMapper::toTaskResponseDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(
+                new BaseResponse(true, "Tasks fetched successfully", tasks)
+        );
     }
 }
