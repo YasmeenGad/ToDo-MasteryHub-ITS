@@ -41,8 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req -> req
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest()
-                                .authenticated()
+                                .requestMatchers("/api/tasks/**").authenticated()
                 )
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
