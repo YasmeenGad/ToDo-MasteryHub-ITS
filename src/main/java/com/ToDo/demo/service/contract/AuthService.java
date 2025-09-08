@@ -13,4 +13,5 @@ public interface AuthService {
     ResponseEntity<BaseResponse> register(RegisterRequestDto request);
     ResponseEntity<BaseResponse> forgotPassword(ForgotPasswordRequestDto request);
     ResponseEntity<BaseResponse> resetPassword(ResetPasswordRequestDto request);
+    ResponseEntity<BaseResponse> logout();
 }
