@@ -146,4 +146,66 @@ public class TaskServiceImpl implements TaskService {
                 new BaseResponse(true, "Tasks fetched successfully", tasks)
         );
     }
+
+    @Override
+    public ResponseEntity<BaseResponse> markTaskCompleted(Long taskId, Long userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse(false, "User not found", null));
+        }
+
+        Optional<TaskEntity> task = taskRepository.findById(taskId);
+        if (task.isEmpty() || !task.get().getUser().getId().equals(userId)) {
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse(false, "Task not found for this user", null));
+        }
+
+        TaskEntity taskEntity = task.get();
+        taskEntity.setCompleted(true);
+        taskRepository.save(taskEntity);
+
+        return ResponseEntity.ok(
+                new BaseResponse(true, "Task marked as completed", null)
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> markAllTasksCompleted(Long userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse(false, "User not found", null));
+        }
+
+        List<TaskEntity> tasks = taskRepository.findByUser(user.get());
+        tasks.forEach(task -> task.setCompleted(true));
+        taskRepository.saveAll(tasks);
+
+        return ResponseEntity.ok(
+                new BaseResponse(true, "All tasks marked as completed", null)
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> deleteAllCompletedTasks(Long userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(new BaseResponse(false, "User not found", null));
+        }
+
+        List<TaskEntity> completedTasks = taskRepository.findByUserAndCompletedTrue(user.get());
+        if (completedTasks.isEmpty()) {
+            return ResponseEntity.ok(
+                    new BaseResponse(true, "No completed tasks found", null)
+            );
+        }
+
+        taskRepository.deleteAll(completedTasks);
+
+        return ResponseEntity.ok(
+                new BaseResponse(true, "All completed tasks deleted", null)
+        );
+    }
 }

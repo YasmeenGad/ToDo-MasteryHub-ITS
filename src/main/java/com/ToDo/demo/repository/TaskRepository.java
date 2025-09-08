@@ -9,4 +9,5 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     List<TaskEntity> findByUser(UserEntity user);
     List<TaskEntity> findByUserAndLabel(UserEntity user, TaskLabel label);
+    List<TaskEntity> findByUserAndCompletedTrue(UserEntity user);
 }

@@ -12,4 +12,7 @@ public interface TaskService {
     ResponseEntity<BaseResponse> deleteTask(Long taskId, Long userId);
     ResponseEntity<BaseResponse> getAllTasks(Long userId);
     ResponseEntity<BaseResponse> getTasksByLabel(Long userId, TaskLabel label);
+    ResponseEntity<BaseResponse> markTaskCompleted(Long taskId, Long userId);
+    ResponseEntity<BaseResponse> markAllTasksCompleted(Long userId);
+    ResponseEntity<BaseResponse> deleteAllCompletedTasks(Long userId);
 }
