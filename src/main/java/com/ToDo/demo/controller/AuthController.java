@@ -1,9 +1,9 @@
 package com.ToDo.demo.controller;
 
+import com.ToDo.demo.model.dto.request.ForgotPasswordRequestDto;
 import com.ToDo.demo.model.dto.request.LoginRequestDto;
 import com.ToDo.demo.model.dto.request.RegisterRequestDto;
-import com.ToDo.demo.model.dto.response.LoginResponseDto;
-import com.ToDo.demo.model.dto.response.RegisterResponseDto;
+import com.ToDo.demo.model.dto.request.ResetPasswordRequestDto;
 import com.ToDo.demo.service.contract.AuthService;
 import com.ToDo.demo.utils.base.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +29,15 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> register(@RequestBody @Validated RegisterRequestDto request) {
         return _authService.register(request);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<BaseResponse> forgotPassword(@RequestBody ForgotPasswordRequestDto requestDto) {
+        return _authService.forgotPassword(requestDto);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<BaseResponse> resetPassword(@RequestBody ResetPasswordRequestDto requestDto) {
+        return _authService.resetPassword(requestDto);
     }
 }

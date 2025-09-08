@@ -1,7 +1,9 @@
 package com.ToDo.demo.service.impl;
 
+import com.ToDo.demo.model.dto.request.ForgotPasswordRequestDto;
 import com.ToDo.demo.model.dto.request.LoginRequestDto;
 import com.ToDo.demo.model.dto.request.RegisterRequestDto;
+import com.ToDo.demo.model.dto.request.ResetPasswordRequestDto;
 import com.ToDo.demo.model.dto.response.LoginResponseDto;
 import com.ToDo.demo.model.dto.response.RegisterResponseDto;
 import com.ToDo.demo.model.entity.UserEntity;
@@ -72,6 +74,48 @@ public class AuthServiceImpl implements AuthService {
 
         return ResponseEntity.ok(
                 new BaseResponse(true, "User registered successfully", AuthMapper.toRegisterResponseDto(savedUser))
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> forgotPassword(ForgotPasswordRequestDto request) {
+        UserEntity user = userRepository.findByEmail(request.getEmail())
+                .orElse(null);
+
+        if (user == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "Email not found", null));
+        }
+
+        return ResponseEntity.ok(
+                new BaseResponse(true, "Email verified successfully. You can reset your password now.", null)
+        );
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse> resetPassword(ResetPasswordRequestDto request) {
+        boolean passwordsMatch = request.getNewPassword().equals(request.getConfirmPassword());
+
+        if (!passwordsMatch) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "Passwords don't match", null));
+        }
+
+        UserEntity user = userRepository.findByEmail(request.getEmail()).orElse(null);
+
+        if (user == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new BaseResponse(false, "User not found", null));
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok(
+                new BaseResponse(true, "Password reset successfully", null)
         );
     }
 }

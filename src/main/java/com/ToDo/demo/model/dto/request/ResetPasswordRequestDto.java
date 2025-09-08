@@ -18,4 +18,7 @@ public class ResetPasswordRequestDto {
 
     @NotBlank(message = "please confirm the password")
     private String confirmPassword;
+
+    @NotBlank(message = "Email is required")
+    private String email;
 }
