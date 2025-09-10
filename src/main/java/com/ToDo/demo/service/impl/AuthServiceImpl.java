@@ -5,7 +5,6 @@ import com.ToDo.demo.model.dto.request.LoginRequestDto;
 import com.ToDo.demo.model.dto.request.RegisterRequestDto;
 import com.ToDo.demo.model.dto.request.ResetPasswordRequestDto;
 import com.ToDo.demo.model.dto.response.LoginResponseDto;
-import com.ToDo.demo.model.dto.response.RegisterResponseDto;
 import com.ToDo.demo.model.entity.UserEntity;
 import com.ToDo.demo.model.mapper.AuthMapper;
 import com.ToDo.demo.repository.UserRepository;
@@ -18,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +43,22 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword())
         );
         String token = jwtGenerator.generateToken(authentication);
+
+        User principal =
+                (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+
+
+        UserEntity user = userRepository.findByEmail(principal.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        LoginResponseDto responseDto = LoginResponseDto.builder()
+                .accessToken(token)
+                .userId(user.getId().toString())
+                .firstName(user.getFirstName())
+                .lastName(user.getSecondName())
+                .build();
         return ResponseEntity.ok(
-                new BaseResponse(true, "User logged successfully", new LoginResponseDto(token))
+                new BaseResponse(true, "User logged successfully", responseDto)
         );
     }
 
