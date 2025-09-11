@@ -1,5 +1,6 @@
 package com.ToDo.demo.model.dto.request;
 
+import com.ToDo.demo.utils.constants.AppConstants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,19 +14,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequestDto {
 
-    @NotBlank(message = "Please Enter First Name")
+    @NotBlank(message = AppConstants.enterFirstName)
     private String firstName;
 
-    @NotBlank(message = "Please Enter Second Name")
+    @NotBlank(message = AppConstants.enterSecondName)
     private String secondName;
 
-    @Email(message = "Please Enter a valid email")
-    @NotBlank(message = "Please Enter Email")
+    @Email(message = AppConstants.enterValidEmail)
+    @NotBlank(message = AppConstants.enterEmail)
     private String email;
 
-    @NotBlank(message = "Please Enter Password")
+    @NotBlank(message = AppConstants.passwordIsRequired)
     private String password;
 
-    @NotBlank(message = "Please Enter Confirm Password")
+    @NotBlank(message = AppConstants.confirmPassword)
     private String confirmPassword;
 }

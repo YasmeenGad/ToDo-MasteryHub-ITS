@@ -1,7 +1,7 @@
 package com.ToDo.demo.security;
 
 import java.util.Date;
-
+import com.ToDo.demo.utils.constants.AppConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,7 +16,7 @@ import javax.crypto.SecretKey;
 public class JWTGenerator {
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(AppConstants.SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -25,7 +25,7 @@ public class JWTGenerator {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365))
                 .signWith(getSigningKey())
                 .compact();
     }

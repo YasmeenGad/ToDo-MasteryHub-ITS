@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginResponseDto {
     private String accessToken;
-    private String userId;
+    private Long userId;
     private String firstName;
     private String lastName;
 }

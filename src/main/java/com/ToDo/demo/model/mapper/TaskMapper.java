@@ -23,6 +23,7 @@ public class TaskMapper {
                 .note(entity.getNote())
                 .label(entity.getLabel())
                 .date(entity.getDate())
+                .completed(entity.isCompleted())
                 .build();
     }
 }

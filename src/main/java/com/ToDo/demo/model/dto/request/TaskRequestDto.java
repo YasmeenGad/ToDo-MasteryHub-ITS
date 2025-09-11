@@ -1,5 +1,6 @@
 package com.ToDo.demo.model.dto.request;
 
+import com.ToDo.demo.utils.constants.AppConstants;
 import com.ToDo.demo.utils.enums.TaskLabel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Data
@@ -17,14 +18,14 @@ import java.time.LocalDateTime;
 @Builder
 public class TaskRequestDto {
 
-    @NotBlank(message = "Title is required")
+    @NotBlank(message = AppConstants.titleIsRequired)
     private String title;
 
     private String note;
 
-    @NotNull(message = "Label is required")
+    @NotNull(message = AppConstants.labelIsRequired)
     private TaskLabel label;
 
-    @NotNull(message = "Date is required")
-    private LocalDateTime date;
+    @NotNull(message = AppConstants.dateIsRequired)
+    private LocalDate date;
 }

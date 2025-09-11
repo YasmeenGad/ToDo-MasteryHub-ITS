@@ -1,6 +1,7 @@
 package com.ToDo.demo.model.dto.request;
 
 
+import com.ToDo.demo.utils.constants.AppConstants;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +14,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResetPasswordRequestDto {
 
-    @NotBlank(message = "Please Enter the password")
+    @NotBlank(message = AppConstants.passwordIsRequired)
     private String newPassword;
 
-    @NotBlank(message = "please confirm the password")
+    @NotBlank(message = AppConstants.confirmPassword)
     private String confirmPassword;
 
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = AppConstants.enterEmail)
     private String email;
 }

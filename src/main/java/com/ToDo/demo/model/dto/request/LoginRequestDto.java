@@ -1,5 +1,6 @@
 package com.ToDo.demo.model.dto.request;
 
+import com.ToDo.demo.utils.constants.AppConstants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LoginRequestDto {
-    @Email(message = "Please Provide a valid Email")
-    @NotBlank(message = "Email is required")
+    @Email(message = AppConstants.enterValidEmail)
+    @NotBlank(message = AppConstants.enterEmail)
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = AppConstants.passwordIsRequired)
     private String password;
 
 }
